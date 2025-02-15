@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "nusrettinel/java-app"
         DOCKER_CREDENTIALS_ID = "docker-hub-credentials"
-        SECOND_SERVER = "root@ikinci-server-ip"  // Buraya ikinci sunucunun IP'sini koy
+        SECOND_SERVER = "nusrettinel2@192.168.1.13"  // Buraya ikinci sunucunun IP'sini koy
     }
 
     stages {
