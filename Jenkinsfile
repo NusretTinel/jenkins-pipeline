@@ -48,12 +48,13 @@ pipeline {
         stage('Deploy to Second Server') {
     steps {
         sh """
-      ssh -i /var/lib/jenkins/.ssh/jenkins-deploy-key -o StrictHostKeyChecking=no nusrettinel2@192.168.1.13 << EOF
+    ssh -i /var/lib/jenkins/.ssh/jenkins-deploy-key -o StrictHostKeyChecking=no nusrettinel2@192.168.1.13 "bash -s" << "EOF"
     docker pull nusrettinel/java-app
     docker ps -q --filter "name=java_app" | grep -q . && docker stop java_app || echo "Container already stopped."
     docker ps -aq --filter "name=java_app" | grep -q . && docker rm java_app || echo "No existing container to remove."
     docker run -d --name java_app -p 8080:8080 nusrettinel/java-app
 EOF
+
 
         """
     }
