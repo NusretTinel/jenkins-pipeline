@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-       DOCKER_IMAGE = "nusrettinel/java-app"
+        DOCKER_IMAGE = "nusrettinel/java-app"
         DOCKER_CREDENTIALS_ID = "docker-hub-credentials"
-        SECOND_SERVER = "root@ikinci-server-ip"
     }
 
     stages {
@@ -17,6 +16,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh '''
+                #!/bin/bash
                 javac Main.java
                 java Main
                 '''
@@ -26,30 +26,21 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                docker build -t "${env.DOCKER_IMAGE}" -f "${env.WORKSPACE}/Dockerfile" .
+                #!/bin/bash
+                docker build -t "$DOCKER_IMAGE" .
                 '''
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh '''
-                echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-                docker push "${env.DOCKER_IMAGE}"
-                '''
-            }
-        }
-
-        stage('Deploy to Second Server') {
-            steps {
-                sh """
-                ssh -o StrictHostKeyChecking=no "${env.SECOND_SERVER}" << EOF
-                    docker pull "${env.DOCKER_IMAGE}"
-                    docker stop java_app || true
-                    docker rm java_app || true
-                    docker run -d --name java_app -p 8080:8080 "${env.DOCKER_IMAGE}"
-                EOF
-                """
+                withCredentials([usernamePassword(credentialsId: "$DOCKER_CREDENTIALS_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh '''
+                    #!/bin/bash
+                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                    docker push "$DOCKER_IMAGE"
+                    '''
+                }
             }
         }
     }
