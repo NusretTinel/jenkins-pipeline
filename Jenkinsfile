@@ -16,21 +16,27 @@ pipeline {
         
         stage('Build & Test') {
             steps {
-                sh 'javac Main.java'
-                sh 'java Main'
+                sh '''
+                javac Main.java
+                java Main
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${env.DOCKER_IMAGE} -f ${WORKSPACE}/Dockerfile .'
+                sh '''
+                docker build -t "$DOCKER_IMAGE" -f "$WORKSPACE/Dockerfile" .
+                '''
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                withDockerRegistry([credentialsId: "${env.DOCKER_CREDENTIALS_ID}", url: '']) {
-                    sh 'docker push ${env.DOCKER_IMAGE}'
+                withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS_ID", url: '']) {
+                    sh '''
+                    docker push "$DOCKER_IMAGE"
+                    '''
                 }
             }
         }
@@ -38,11 +44,11 @@ pipeline {
         stage('Deploy to Second Server') {
             steps {
                 sh """
-                ssh -o StrictHostKeyChecking=no ${env.SECOND_SERVER} << EOF
-                    docker pull ${env.DOCKER_IMAGE}
+                ssh -o StrictHostKeyChecking=no $SECOND_SERVER << EOF
+                    docker pull $DOCKER_IMAGE
                     docker stop java_app || true
                     docker rm java_app || true
-                    docker run -d --name java_app -p 8080:8080 ${env.DOCKER_IMAGE}
+                    docker run -d --name java_app -p 8080:8080 $DOCKER_IMAGE
                 EOF
                 """
             }
