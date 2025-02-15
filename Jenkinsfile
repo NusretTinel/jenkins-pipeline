@@ -23,7 +23,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh ' docker build -t nusrettinel/java-app -f /var/lib/jenkins/workspace/Java-Pipeline/Dockerfile .'
+                
             }
         }
 
