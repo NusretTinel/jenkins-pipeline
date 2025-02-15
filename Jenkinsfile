@@ -1,16 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "elinsu/java-app"
-        DOCKER_CREDENTIALS_ID = "docker-hub-credentials"
-        SECOND_SERVER = "root@ikinci-server-ip"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/NusretTinel/jenkins-pipeline'
+                git credentialsId: 'github-ssh', url: 'git@github.com:NusretTinel/jenkins-pipeline.git'
             }
         }
         
@@ -23,30 +17,18 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh 'docker build -t nusrettinel/java-app .'
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                withDockerRegistry([credentialsId: DOCKER_CREDENTIALS_ID, url: '']) {
-                    sh 'docker push $DOCKER_IMAGE'
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh 'docker push nusrettinel/java-app'
                 }
-            }
-        }
-
-        stage('Deploy to Second Server') {
-            steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no $SECOND_SERVER '
-                    docker pull $DOCKER_IMAGE &&
-                    docker stop java_app || true &&
-                    docker rm java_app || true &&
-                    docker run -d --name java_app -p 8080:8080 $DOCKER_IMAGE
-                '
-                '''
             }
         }
     }
 }
+
 
