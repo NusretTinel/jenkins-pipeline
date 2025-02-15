@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-ssh2', url: 'git@github.com:NusretTinel/jenkins-pipeline.git'
+                git credentialsId: 'github-ssh', url: 'git@github.com:NusretTinel/jenkins-pipeline.git'
             }
         }
         
@@ -30,5 +30,3 @@ pipeline {
         }
     }
 }
-
-
