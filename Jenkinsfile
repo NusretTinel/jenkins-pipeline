@@ -46,17 +46,17 @@ pipeline {
         }
 
         stage('Deploy to Second Server') {
-            steps {
-                sh '''
-                #!/bin/bash
-                ssh -o StrictHostKeyChecking=no $SECOND_SERVER << EOF
-                    docker pull $DOCKER_IMAGE
-                    docker stop java_app || true
-                    docker rm java_app || true
-                    docker run -d --name java_app -p 8080:8080 $DOCKER_IMAGE
-                EOF
-                '''
-            }
-        }
+    steps {
+        sh """
+        ssh -i /var/lib/jenkins/.ssh/jenkins-deploy-key -o StrictHostKeyChecking=no nusrettinel2@192.168.1.13 << EOF
+            docker pull $DOCKER_IMAGE
+            docker stop java_app || true
+            docker rm java_app || true
+            docker run -d --name java_app -p 8080:8080 $DOCKER_IMAGE
+        EOF
+        """
+    }
+}
+
     }
 }
