@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "nusrettinel/java-app"
-        DOCKER_USERNAME = "nusrettinel"
-        DOCKER_PASSWORD = credentials('docker-hub-password')  // Docker Hub Credentials ID
+       DOCKER_IMAGE = "nusrettinel/java-app"
+        DOCKER_CREDENTIALS_ID = "docker-hub-credentials"
         SECOND_SERVER = "root@ikinci-server-ip"
     }
 
