@@ -48,7 +48,7 @@ pipeline {
                     docker pull "${env.DOCKER_IMAGE}"
                     docker stop java_app || true
                     docker rm java_app || true
-                    docker run -d --name java_app -p 8080:8080 "${env.DOCKER_IMAGE}"
+                    docker run -d --name java_app -p 8443:8443 "${env.DOCKER_IMAGE}"
                 EOF
                 """
             }
