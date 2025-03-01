@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Derleme') {
             steps {
-                sh 'javac java-app.java'
+                sh 'javac Main.java'
                 sh 'jar cvf app.jar *.class'
             }
         }
