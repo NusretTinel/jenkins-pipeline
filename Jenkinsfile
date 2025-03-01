@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Kod Çekme') {
             steps {
-                git url: 'https://github.com/NusretTinel/java-app.git', branch: 'main'
+                git url: 'https://github.com/NusretTinel/java-app.java', branch: 'main'
             }
         }
         stage('Derleme') {
