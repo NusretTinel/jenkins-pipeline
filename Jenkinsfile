@@ -3,13 +3,14 @@ pipeline {
     stages {
         stage('Kod Çekme') {
             steps {
-                git url: 'https://github.com/NusretTinel/jenkins-pipeline.git', branch: 'main'
+                git url: 'https://github.com/NusretTinel/java-app.git', branch: 'main', credentialsId: 'github-credentials'
             }
         }
         stage('Derleme') {
             steps {
                 sh 'javac Main.java'
-                sh 'jar cvf app.jar *.class'
+                sh 'echo "Main-Class: Main" > manifest.txt'
+                sh 'jar cvmf manifest.txt app.jar *.class'
             }
         }
         stage('Docker İmajı Oluşturma') {
@@ -22,14 +23,17 @@ pipeline {
                 }
             }
         }
-    stage('Dağıtım') {
-    steps {
-        sshagent(['app-server-ssh']) {
-            sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker stop app || true"'
-            sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker rm app || true"'
-            sh "bash -c \"ssh jenkins-admin@192.168.1.16 docker run -d --name app -p 8081:8080 nusrettinel/app:${env.BUILD_NUMBER}\""
+        stage('Dağıtım') {
+            steps {
+                sshagent(['app-server-ssh']) {
+                    sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker stop app || true"'
+                    sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker rm app || true"'
+                    script {
+                        def buildNumber = env.BUILD_NUMBER
+                        sh "bash -c \"ssh jenkins-admin@192.168.1.16 docker run -d --name app -p 8081:8080 nusrettinel/app:${buildNumber}\""
+                    }
+                }
+            }
         }
-    }
-}
     }
 }
