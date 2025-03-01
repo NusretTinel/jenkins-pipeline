@@ -23,13 +23,13 @@ pipeline {
             }
         }
         stage('Dağıtım') {
-            steps {
-                sshagent(['app-server-ssh']) {
-                    sh 'ssh jenkins-admin@app-server docker stop app || true'
-                    sh 'ssh jenkins-admin@app-server docker rm app || true'
-                    sh 'ssh jenkins-admin@app-server docker run -d --name app -p 8081:8080 nusrettinel/app:${env.BUILD_NUMBER}'
-                }
-            }
+    steps {
+        sshagent(['app-server-ssh']) {
+            sh 'ssh jenkins-admin@192.168.1.14 docker stop app || true'
+            sh 'ssh jenkins-admin@192.168.1.14 docker rm app || true'
+            sh "ssh jenkins-admin@192.168.1.14 docker run -d --name app -p 8081:8080 nusrettinel/app:${env.BUILD_NUMBER}"
         }
+    }
+}
     }
 }
