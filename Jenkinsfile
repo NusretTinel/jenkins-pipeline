@@ -6,12 +6,15 @@ pipeline {
                 git url: 'https://github.com/NusretTinel/jenkins-pipeline.git', branch: 'main'
             }
         }
-        stage('Derleme') {
+         stage('Build & Test') {
             steps {
-                sh 'javac Main.java'
-                sh 'jar cvf app.jar *.class'
+                sh '''
+                javac Main.java
+                java Main
+                '''
             }
         }
+
         stage('Docker İmajı Oluşturma') {
             steps {
                 script {
