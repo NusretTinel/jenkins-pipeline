@@ -1,9 +1,11 @@
-## 🚀 Özellikler
+## 🚀 Features / Özellikler
 
-- **Git Entegrasyonu**: Java uygulamasının kaynak kodunu Git servislerinden otomatik olarak çeker (ör: GitHub, GitLab).
-- **Derleme Süreci**: Kod Jenkins üzerinden derlenir.
-- **Konteynerleştirme**: Derlenmiş uygulama bir Docker imajına dönüştürülür.
-- **İmaj Yayınlama**: Oluşturulan Docker imajı bir imaj deposuna gönderilir (ör: Docker Hub).
-- **Uzaktan Dağıtım**: İmaj, farklı bir Linux sunucusunda çalıştırılır.
-- **Güvenlik**: Jenkins servisine yalnızca SSL (HTTPS) üzerinden erişim sağlanır.
-- **Kod ile Pipeline**: Pipeline tanımı arayüzde değil, bir Jenkinsfile olarak Git deposunda tutulur. Böylece yapılandırma kod ile versiyonlanabilir.
+| English                                                                 | Türkçe                                                                 |
+|------------------------------------------------------------------------|------------------------------------------------------------------------|
+| **Git Integration**: Pulls source code from Git services like GitHub or GitLab. | **Git Entegrasyonu**: GitHub veya GitLab gibi Git servislerinden kaynak kodu çeker. |
+| **Build Process**: Compiles the code using Jenkins.                   | **Derleme Süreci**: Kod Jenkins üzerinden derlenir.                    |
+| **Containerization**: Packages the code into a Docker image.          | **Konteynerleştirme**: Derlenmiş kod bir Docker imajına dönüştürülür. |
+| **Image Publishing**: Pushes the image to a Docker registry.          | **İmaj Yayınlama**: Docker imajı bir imaj deposuna gönderilir.         |
+| **Remote Deployment**: Runs the image on a second Linux server.       | **Uzaktan Dağıtım**: İmaj, farklı bir Linux sunucusunda çalıştırılır. |
+| **Security**: Access to Jenkins is allowed only via SSL (HTTPS).      | **Güvenlik**: Jenkins servisine yalnızca SSL (HTTPS) ile erişim sağlanır. |
+| **Pipeline as Code**: Pipeline is versioned as a `Jenkinsfile` in Git. | **Kod ile Pipeline**: Pipeline, Git içinde `Jenkinsfile` olarak tutulur ve versiyonlanır. |
