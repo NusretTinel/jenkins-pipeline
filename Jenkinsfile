@@ -28,9 +28,9 @@ pipeline {
     stage('Dağıtım') {
     steps {
         sshagent(['app-server-ssh']) {
-            sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker stop app || true"'
-            sh 'bash -c "ssh jenkins-admin@192.168.1.16 docker rm app || true"'
-            sh "bash -c \"ssh jenkins-admin@192.168.1.16 docker run -d --name app -p 8081:8080 nusrettinel/app:${env.BUILD_NUMBER}\""
+            sh 'bash -c "ssh jenkins-admin@<ip> docker stop app || true"'
+            sh 'bash -c "ssh jenkins-admin@<ip> docker rm app || true"'
+            sh "bash -c \"ssh jenkins-admin@<ip> docker run -d --name app -p 8081:8080 nusrettinel/app:${env.BUILD_NUMBER}\""
         }
     }
 }
